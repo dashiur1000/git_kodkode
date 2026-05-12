@@ -1,0 +1,5 @@
+number_one = int(input("enter a number: "))
+number_two = int(input("enter a number: "))
+number_three = int(input("enter a number: "))
+all_num = bool(number_one > 0)+bool(number_two > 0)+bool(number_three > 0)
+print(all_num)
