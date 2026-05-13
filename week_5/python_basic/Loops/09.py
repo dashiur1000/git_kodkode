@@ -1,10 +1,14 @@
-n = 1
-highest_number = 0
+highest_number = float("-inf")
+def choosing_an_integer():
+    integer = int(input("enter a number: "))
+    return integer
+
 while True:
-    n = int(input("enter a number: "))
-    if n > highest_number and n != 0:
-        highest_number = n
-    elif n == 0:
+    my_integer = choosing_an_integer()
+    if my_integer > highest_number:
+        highest_number = my_integer
+    elif my_integer == 0:
         print(highest_number)
+        break
     else:
         continue
