@@ -86,7 +86,3 @@ def most_frequent_value(dct):
     for item in list_num:
         dict_num[item] = dict_num.get(item, 0) + 1
     return max(dict_num, key=dict_num.get)
-
-
-
-print(most_frequent_value({"a": 1, "b": 2, "c": 1, "d": 3, "e": 1}))
