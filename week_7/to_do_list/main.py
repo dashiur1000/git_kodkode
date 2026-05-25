@@ -1,8 +1,15 @@
 def load_tasks(filename):
     """
-    :dicts קוראת את הקובץ ומחזירה רשימה של
-    [{'id': 1, 'status': 'PENDING', 'desc': 'ללמוד Python'}, ...]
-    אם הקובץ לא קיים — מחזירה רשימה ריקה
+    Loads tasks from a file and returns them as a list of dictionaries.
+
+    Each dictionary contains 'id', 'status', and 'desc' keys. If the file
+    does not exist, an empty list is returned.
+
+    Args:
+        filename (str): The path to the file containing the tasks.
+
+    Returns:
+        list: A list of dictionaries representing the tasks.
     """
     new_list = []
     try:
@@ -17,8 +24,13 @@ def load_tasks(filename):
 
 def save_tasks(filename, tasks):
     """
-    שומרת את רשימת המשימות לקובץ
-    description|status|id :פורמט כל שורה
+    Saves a list of tasks to a file.
+
+    The tasks are appended to the file in the format: id|status|description.
+
+    Args:
+        filename (str): The path to the file where tasks will be saved.
+        tasks (list): A list of task dictionaries to write to the file.
     """
     with open(filename, "a", encoding="utf-8") as f:
         for i in tasks:
@@ -27,10 +39,14 @@ def save_tasks(filename, tasks):
 
 def add_task(filename, description):
     """
-    :מוסיפה משימה חדשה עם
-    מספר המשימה הבאה = ID -
-    - status = 'PENDING'
-    הפרמטר שניתן = description -
+    Adds a new task to the file with a 'PENDING' status.
+
+    The task ID is automatically calculated based on the number of lines
+    currently in the file.
+
+    Args:
+        filename (str): The path to the tasks file.
+        description (str): The description of the new task.
     """
     with open(filename, "r+", encoding="utf-8") as f:
         nom_line = 1
@@ -41,8 +57,13 @@ def add_task(filename, description):
 
 def complete_task(filename, task_id):
     """
-    DONE-ל PENDING-מ id_task של משימה status משנה את
-    לא קיים — מדפיסה הודעת שגיאה ID-אם ה
+    Updates the status of a specific task from 'PENDING' to 'DONE'.
+
+    If the given task ID is not found in the file, an error message is printed.
+
+    Args:
+        filename (str): The path to the tasks file.
+        task_id (int): The ID of the task to be marked as completed.
     """
     with open(filename, "r", encoding="utf-8") as f:
         lines = f.readlines()
@@ -63,6 +84,14 @@ def complete_task(filename, task_id):
         print("ERROR!")
 
 def list_tasks(filename):
+    """
+    Reads tasks from the file and prints them to the console.
+
+    Displays completed tasks with '[v]' and pending tasks with '[_]'.
+
+    Args:
+        filename (str): The path to the tasks file.
+    """
     with open(filename, "r", encoding="utf-8") as f:
         for i in f:
             parts = i.strip().split("|")
@@ -73,6 +102,9 @@ def list_tasks(filename):
 
 
 def main():
+    """
+    The main execution loop for the To-Do List Manager CLI application.
+    """
     FILENAME = "tasks.txt"
 
     while True:
