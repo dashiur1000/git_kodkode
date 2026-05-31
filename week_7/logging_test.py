@@ -39,13 +39,43 @@ logger = logging.getLogger("bibist")
 #     else:
 #         logger.error("divide can not by %s", b)
 
-# 5
-# DEBUG:
+# 3.1
+# DEBUG: לבדןק האם משתנה השתנה
 # INFO: משתמש התחבר בהצלחה למערכת, ההזמנה נשלחה בהצלחה
-# WARNING
+# WARNING: מוצר אוזל מהמלאי
 
-# 6
+# 3.2
+def process_payment(user_id, amount):
+    logger.info('Starting payment for user %s', user_id)
+    if amount <= 0:
+        logger.error('Invalid %s', amount)
+        return
+    if amount > 10000:
+        logger.warning('Large transaction')
+    logger.info('Payment of completed for user %s', amount, user_id)
 
+
+# 5.1
+file_handler = logging.FileHandler("bibi.csv", encoding="utf-8")
+formatter = logging.Formatter("%(asctime)s , %(levelname)s , %(name)s , %(message) s")
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+def export_logger():
+    logger.error("error in the program")
+
+export_logger()
+
+
+
+
+
+
+
+
+
+
+# Exercises file
 # 1
 # לא נכון
 # נכון
