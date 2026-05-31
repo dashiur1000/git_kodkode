@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 
 app = FastAPI()
 
@@ -11,10 +11,10 @@ def get_op(a: int, op: str, b: int):
     elif op == "mul":
         result = a * b
     elif op == "div":
-        try:
+        if b != 0:
             result = a / b
-        except ZeroDivisionError:
-            return "ERROR! ZeroDivisionError"
+        else:
+            raise HTTPException(status_code=400, detail="ERROR! ZeroDivisionError")
     else:
-        raise TypeError("TypeError")
-    return {f"operation: {op}, result: {a} {op} {b} = {result}"}
+        raise HTTPException(status_code=400, detail="ERROR! invalid error")
+    return {"operation": op, "result": result}
