@@ -1,0 +1,6 @@
+ Endpoint,Method,Description,Success Response (Code)\n
+/todos/,get,return all,200\n
+/todos/,put,add new,201\n
+/todos/id/,get,return id,200\n
+/todos/id,put,update id,201\n
+/todos/id,delete,delete id,200\n
