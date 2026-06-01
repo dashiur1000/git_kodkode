@@ -40,7 +40,6 @@ def number_of_students():
 def all_students():
     return grades
 
-
 @app.get("/students/{student_id}")
 def one_student(student_id):
     if student_id in grades:
