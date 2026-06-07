@@ -20,5 +20,6 @@ def ged_all_soldiers():
     return {"soldiers": []}
 
 
+
 if __name__ == "__main__":
     uvicorn.run("main:app", reload=True)

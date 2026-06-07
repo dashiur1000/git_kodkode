@@ -29,3 +29,44 @@ def get_all_messages():
     conn.close()
     return rows
 
+def add_new_message(new_message: dict):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    query = """
+    INSERT INTO messages (unit, classification, content, source)
+    VALUES (%s, %s, %s, %s)
+    """
+
+    value = (
+        new_message["unit"],
+        new_message["classification"],
+        new_message["content"],
+        new_message["source"]
+    )
+
+
+    cursor.execute(query, value)
+    conn.commit()
+
+    new_id = cursor.lastrowid
+
+    cursor.close()
+    conn.commit()
+    return new_id
+
+
+def get_by_classification(classification):
+    new_list = []
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM messages')
+    rows = cursor.fetchall()
+    for item in rows:
+        if item[2] == classification:
+            new_list.append(tuple(item))
+    cursor.close()
+    conn.close()
+    return new_list
+
+
