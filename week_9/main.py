@@ -11,6 +11,7 @@ class SoldierIn(BaseModel):
     name: str
     rank: str | None = None
     unit: str | None = None
+    active: bool = True
 
 
 @app.post("/setup")
@@ -36,7 +37,9 @@ def get_soldier(soldier_id: int):
 
 @app.post("/soldiers", status_code=201)
 def add_soldier(body: SoldierIn):
-    new_id = db.create(body.name, body.rank, body.unit)
+    new_id = db.create(body.name, body.rank, body.unit, body.active)
+    if not new_id:
+        raise HTTPException(status_code=404, detail="Soldier not found")
     return {"id": new_id, "message": "Soldier created"}
 
 

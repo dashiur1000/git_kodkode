@@ -77,7 +77,7 @@ def create_message(unit: str, classification: str, content: str, source: str | N
     conn.commit()
     return new_id
 
-def update_message(message_id: int, data: dict) -> bool
+def update_message(message_id: int, data: dict) -> bool:
     conn = get_connection()
     cursor = conn.cursor()
 

@@ -1,5 +1,5 @@
 from MySQLdb.constants.ER import INSERT_INFO
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 import uvicorn
 import db_messages
 
@@ -20,16 +20,19 @@ def get_messages():
     all_messages = db_messages.get_all_messages()
     return {"messages": all_messages}
 
-@app.post("/messages")
-def new_message(new_message: dict):
-    new_id = db_messages.add_new_message(new_message)
-    return {"status": "created", "id": new_id}
-
 
 @app.get("/messages/{classification}")
 def get_all_by_classification(classification: str):
     by_classification = db_messages.get_by_classification(classification)
     return {"messages" :by_classification}
+
+
+
+
+@app.post("/messages", status_code=201)
+def new_message(new_message: dict):
+    new_id = db_messages.create_message(new_message["unit"], new_message["classification"], new_message["content"], new_message["source"])
+    return {"status": "created", "id": new_id}
 
 
 if __name__ == "__main__":
