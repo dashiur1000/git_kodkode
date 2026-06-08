@@ -16,3 +16,20 @@ def get_schema() -> list:
     cursor.close()
     conn.close()
     return [{"column": row[0], "type": row[1]} for row in rows]
+
+
+def create(name: str, rank: str, unit: str, active: bool):
+    conn = get_connection()
+    cursor = conn
+
+    sql = "INSERT INTO soldiers (name, rank, unit, active) VALUES (%s, %s, %s, %s)"
+    values = (name, rank, unit, active)
+
+    cursor.execute(sql, values)
+    conn.commit()
+
+    new_id = cursor.lastrowid
+
+    cursor.close()
+    conn.close()
+    return new_id

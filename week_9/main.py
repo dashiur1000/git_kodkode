@@ -19,6 +19,11 @@ def get_schema():
 def ged_all_soldiers():
     return {"soldiers": []}
 
+@app.post("/new_soldier")
+def create_new_soldier(new_soldier: dict):
+    new_soldier = db.create(new_soldier["name"], new_soldier["rank"], new_soldier["unit"], new_soldier["active"])
+    return new_soldier
+
 
 
 if __name__ == "__main__":
