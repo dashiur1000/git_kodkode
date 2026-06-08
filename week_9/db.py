@@ -57,4 +57,36 @@ def update(soldier_id: int, data: dict) -> bool:
 
 
 
+def delete(soldier_id: int) -> bool:
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM soldiers WHERE id = %s", (soldier_id,))
+    conn.commit()
+    deleted = cursor.rowcount > 0
+    cursor.close()
+    conn.close()
+    return deleted
+
+
+
+def get_all() -> list:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)   # returns dicts instead of tuples
+    cursor.execute("SELECT * FROM soldiers")
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
+def get_by_id(soldier_id: int) -> dict | None:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM soldiers WHERE id = %s", (soldier_id,))
+    row = cursor.fetchone()   # returns one dict or None
+    cursor.close()
+    conn.close()
+    return row
+
+
+
 
