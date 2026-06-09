@@ -1,6 +1,6 @@
 from uuid import main
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 import db
 import uvicorn
 from pydantic import BaseModel
@@ -24,8 +24,20 @@ def get_schema():
     return {"columns": columns}
 
 @app.get("/soldiers")
-def ged_all_soldiers():
+def list_soldiers(
+        rank: str | None = Query(default=None),
+        sort: str = Query(default=None)
+):
+    if rank:
+        return {"soldiers": db.get_by_rank(rank)}
+    elif sort:
+        return {"soldiers": db.get_active_sorted(sort)}
     return {"soldiers": db.get_all()}
+
+
+# @app.get("/soldiers")
+# def ged_all_soldiers():
+#     return {"soldiers": db.get_all()}
 
 @app.get("/soldiers/{soldier_id}")
 def get_soldier(soldier_id: int):
@@ -43,6 +55,15 @@ def add_soldier(body: SoldierIn):
     return {"id": new_id, "message": "Soldier created"}
 
 
+@app.get("/soldiers/units")
+def list_units():
+    return {"units": db.get_distinct_units()}
+
+
+@app.get("/soldiers/search")
+def search_soldiers(name: str = Query(...)):
+    return {"soldiers": db.search_by_name(name)}
+
 @app.put("/soldiers/{soldier_id}")
 def edit_soldier(soldier_id: int, body: SoldierIn):
     data = body.model_dump(exclude_none=True)
@@ -58,5 +79,7 @@ def remove_soldier(soldier_id: int):
         raise HTTPException(status_code=404, detail="Soldier not found")
     return {"message": "Deleted"}
 
+
+
 if __name__ == "__main__":
-    uvicorn.run("main:app", reload=True)
+    uvicorn.run("main:app", port=8001, reload=True)
