@@ -159,3 +159,59 @@ def get_with_missing_rank() -> list:
     return rows
 
 
+# def count_by_unit() -> list:
+#     conn = get_connection()
+#     cursor = conn.cursor(dictionary=True)
+#     cursor.execute("""
+#     SELECT unit,
+#     COUNT(*) AS total
+#     FROM soldiers
+#     GROUP BY unit
+#     ORDER BY total DESC
+#     """)
+#     rows = cursor.fetchall()
+#     cursor.close()
+#     conn.close()
+#     return rows
+
+
+
+
+
+def get_summary() -> dict:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("SELECT COUNT(*) AS total FROM soldiers")
+    total = cursor.fetchone()["total"]
+
+    cursor.execute("SELECT COUNT(*) AS active FROM soldiers WHERE active = TRUE")
+    active = cursor.fetchone()["active"]\
+
+    conn.close()
+    cursor.close()
+
+    return {"total": total, "active": active, "inactive": total-active}
+
+
+
+
+def count_by_unit() -> list:
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+    SELECT unit,
+    COUNT(*) AS total
+    FROM soldiers
+    GROUP BY unit
+    ORDER BY total DESC
+    """)
+
+
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
+

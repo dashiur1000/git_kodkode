@@ -13,7 +13,6 @@ class SoldierIn(BaseModel):
     unit: str | None = None
     active: bool = True
 
-
 @app.post("/setup")
 def run_setup():
     return {"status": "setup triggered"}
@@ -78,6 +77,18 @@ def remove_soldier(soldier_id: int):
     if not success:
         raise HTTPException(status_code=404, detail="Soldier not found")
     return {"message": "Deleted"}
+
+
+@app.get("/stats/summary")
+def stats_summary():
+    return db.get_summary()
+
+
+@app.get("/stats/units")
+def stats_by_unit():
+    return {"by_unit": db.count_by_unit()}
+
+# @app.get("/stats/understaffed")
 
 
 
