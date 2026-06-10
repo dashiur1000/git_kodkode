@@ -152,7 +152,7 @@ def get_distinct_units() -> list:
 def get_with_missing_rank() -> list:
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM soldiers WHERE rank IS NULL")
+    cursor.execute("SELECT * FROM soldiers WHERE `rank` IS NULL")
     rows = cursor.fetchall()
     cursor.close()
     conn.close()
@@ -214,4 +214,24 @@ def count_by_unit() -> list:
     conn.close()
     return rows
 
+def get_units_with_multiple_soldiers():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+    SELECT `unit`, count(`unit`) as counter FROM soldiers group by `unit` having counter > 1; 
+    """)
+    row = cursor.fetchall()
+    conn.close()
+    cursor.close()
+    return row
 
+
+def get_max_unit():
+    conn = get_connection()
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+    SELECT `unit`, count(*) as max FROM soldiers group by `unit` order by max DESC""")
+    row = cursor.fetchall()
+    conn.close()
+    cursor.close()
+    return row

@@ -34,17 +34,6 @@ def list_soldiers(
     return {"soldiers": db.get_all()}
 
 
-# @app.get("/soldiers")
-# def ged_all_soldiers():
-#     return {"soldiers": db.get_all()}
-
-@app.get("/soldiers/{soldier_id}")
-def get_soldier(soldier_id: int):
-    soldier = db.get_by_id(soldier_id)
-    if soldier is None:
-        raise HTTPException(status_code=404, detail="Soldier not found")
-    return soldier
-
 
 @app.post("/soldiers", status_code=201)
 def add_soldier(body: SoldierIn):
@@ -63,6 +52,31 @@ def list_units():
 def search_soldiers(name: str = Query(...)):
     return {"soldiers": db.search_by_name(name)}
 
+@app.get("/soldiers/missing-rank", status_code=200)
+def get_missing_rank():
+    return {"missing": db.get_with_missing_rank()}
+
+@app.get("/stats/summary")
+def stats_summary():
+    return db.get_summary()
+
+
+@app.get("/stats/units")
+def stats_by_unit():
+    return {"by_unit": db.count_by_unit()}
+
+@app.get("/stats/understaffed")
+def get_unit_more_from_one():
+    return db.get_units_with_multiple_soldiers()
+
+
+@app.get("/stats/units/top")
+def get_max_unit():
+    return db.get_max_unit()
+
+
+
+
 @app.put("/soldiers/{soldier_id}")
 def edit_soldier(soldier_id: int, body: SoldierIn):
     data = body.model_dump(exclude_none=True)
@@ -78,19 +92,13 @@ def remove_soldier(soldier_id: int):
         raise HTTPException(status_code=404, detail="Soldier not found")
     return {"message": "Deleted"}
 
-
-@app.get("/stats/summary")
-def stats_summary():
-    return db.get_summary()
-
-
-@app.get("/stats/units")
-def stats_by_unit():
-    return {"by_unit": db.count_by_unit()}
-
-# @app.get("/stats/understaffed")
-
+@app.get("/soldiers/{soldier_id}")
+def get_soldier(soldier_id: int):
+    soldier = db.get_by_id(soldier_id)
+    if soldier is None:
+        raise HTTPException(status_code=404, detail="Soldier not found")
+    return soldier
 
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", port=8001, reload=True)
+    uvicorn.run("main:app", port=8005, reload=True)
