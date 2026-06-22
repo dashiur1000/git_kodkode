@@ -1,0 +1,87 @@
+using System;
+namespace Thetiger;
+class Fleet
+{
+    static string speedStr = "";
+    static string headingStr = "";
+    static List<string> ids = new List<string>();
+    static List<int> speeds = new List<int>();
+    static List<double> headings = new List<double>();
+
+    static void Main()
+    {
+        int loop = 1;
+        while (loop == 1)
+        {
+            AddTrack();
+            int num = 0;
+            while (num == 0)
+            {
+                Console.Write("Enter 1 or 0 to exit: ");
+                string loopStr = Console.ReadLine();
+                if (int.TryParse(loopStr, out num))
+                {
+                    loop = num;
+                    if (num == 1)
+                    {
+                        loop = 1;
+                        num = 1;
+                    }
+                    else if (num == 0)
+                    {
+                        loop = 0;
+                        num = 1;
+                    }
+                    else
+                    {
+                        num = 0;
+                    }
+                }
+            }
+
+        }
+      
+    }
+    static void AddTrack()
+    { 
+        
+        {
+            Console.Write("Enter ID number: ");
+            ids.Add(Console.ReadLine());
+            int i = 0;
+            while (i == 0)
+            {
+                Console.Write("Enter speed: ");
+                speedStr = Console.ReadLine();
+                if (int.TryParse(speedStr, out int speed))
+                {
+                    speeds.Add(speed);
+                    i = 1;
+                }
+                else
+                    i = 0;
+            }
+            i = 0;
+            while (i == 0)
+            {
+                Console.Write("Enter heading: ");
+                headingStr = Console.ReadLine();
+                if (double.TryParse(headingStr, out double heading))
+                {
+                    headings.Add(heading);
+                    i = 1;
+                }
+                else
+                    i = 0;
+            }
+            for (int c = 0; c < speeds.Count; c++)
+            {
+                Console.Write($"[{ids[c]} ");
+                Console.Write($"{speeds[c]} ");
+                Console.Write($"{headings[c]}]");
+                Console.Write($"\n");
+            }
+            
+        }
+    }
+}
