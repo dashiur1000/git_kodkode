@@ -7,7 +7,7 @@ class SignalInterceptLog
     {
         List<string> sourceId = new List<string>();
         List<string> classification = new List<string>();
-        List<double> signalStrength = new List<double>();
+        List<double?> signalStrength = new List<double?>();
 
         int menu = 1;
         while (menu == 1)
@@ -22,14 +22,16 @@ class SignalInterceptLog
             if (choiceStr == "1")
             {
                 RecordNewBroadcast(sourceId, classification, signalStrength);
+                Console.WriteLine("Create!");
             }
             else if (choiceStr == "2")
             {
-
+                UpdatingSignalStrength(sourceId, signalStrength);
+                
             }
             else if (choiceStr == "3")
             {
-
+                GetAll(sourceId, classification, signalStrength);
             }
             else if (choiceStr == "4")
             {
@@ -42,14 +44,14 @@ class SignalInterceptLog
             }
         }
     }
-    static string RecordNewBroadcast(List<string>sourceId, List<string>classification, List<double> signalStrength)
+    static string RecordNewBroadcast(List<string>sourceId, List<string>classification, List<double?> signalStrength)
     {
         Console.WriteLine("Enter ID");
         string id = Console.ReadLine();
 
         int checkClassification = 0;
         string savedClassification = "";
-        double validSignal = 0;
+        double? validSignal = null;
 
         while (checkClassification == 0)
         {
@@ -63,6 +65,7 @@ class SignalInterceptLog
                 {
                     checkClassification = 0;
                 }
+
                 else
                     checkClassification = 1;
             }
@@ -74,8 +77,8 @@ class SignalInterceptLog
         int checkSignalStrength = 0;
         while (checkSignalStrength == 0)
         {
-            Console.WriteLine("Enter frequency intensity: ");
-            string signalStrengthStr = Console.ReadLine();
+            Console.WriteLine("Enter frequency intensity or 'unknown': ");
+            string? signalStrengthStr = Console.ReadLine();
             if (double.TryParse(signalStrengthStr, out double signalStrengthDuble))
             {
                 if (signalStrengthDuble < 0 | signalStrengthDuble > 300)
@@ -87,6 +90,13 @@ class SignalInterceptLog
                     validSignal = signalStrengthDuble;
                     checkSignalStrength = 1;
             }
+            else if (signalStrengthStr == "unknown")
+            {
+                signalStrengthStr = null;
+                checkSignalStrength = 1;
+            }
+            else
+                checkSignalStrength = 0;
         }
         sourceId.Add(id);
         classification.Add(savedClassification);
@@ -108,25 +118,47 @@ class SignalInterceptLog
                 return "nunu";
         }
     }
-    static void UpdatingClassification(List<string> sourceId, List<string> classification)
+    static void UpdatingSignalStrength(List<string> sourceId, List<double?> signalStrength)
     {
-        double newClassification = 0.0;
-        int checkid = 0;
-        while (checkid == 0)
+        double? validSignal = null;
+        int checkSignalStrength = 0;
         {
         }
         int id = FindById(sourceId);
         if (id >= 0)
         {
-            Console.WriteLine("enter new classification: ");
-            string newClassificationStr = Console.ReadLine();
+            Console.WriteLine("Enter frequency intensity or 'unknown': ");
+            string? signalStrengthStr = Console.ReadLine();
+            if (double.TryParse(signalStrengthStr, out double signalStrengthDuble))
+            {
+                if (signalStrengthDuble < 0 | signalStrengthDuble > 300)
+                {
+                    Console.WriteLine("The number entered is invalid.");
+                    checkSignalStrength = 0;
+                }
+                else
+                {
+                    validSignal = signalStrengthDuble;
+                    checkSignalStrength = 1;
+                }
+            }
+            else if (signalStrengthStr == "unknown")
+            {
+                validSignal = null;
+                checkSignalStrength = 1;
+            }
+            else
+                checkSignalStrength = 1;
 
+        signalStrength[id] = validSignal;
+        Console.WriteLine("Update!");
         }
+        
         else
         {
             Console.WriteLine("Not found");
-            checkid = 1;
         }
+
 
     }
     static int FindById(List<string> sourceId)
@@ -139,5 +171,21 @@ class SignalInterceptLog
                 return index;
         }
         return -1;
+    }
+    static bool GetAll(List<string> sourceId, List<string> classification, List<double?> signalStrength)
+    {
+        for (int i = 0; i < sourceId.Count; i++)
+        {
+            if (sourceId[i] == sourceId[i])
+            {
+                Console.WriteLine($"Signal {i + 1}: [sourceId: {sourceId[i]}, classification: {classification[i]}, signalStrength: {signalStrength[i] ?? 0}]");
+                return true;
+            }
+            Console.WriteLine("The list is empty.");
+            return false;
+        }
+        return false;
+       
+
     }
 }
