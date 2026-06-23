@@ -21,7 +21,7 @@ class SignalInterceptLog
             string choiceStr = Console.ReadLine();
             if (choiceStr == "1")
             {
-
+                RecordNewBroadcast(sourceId, classification, signalStrength);
             }
             else if (choiceStr == "2")
             {
@@ -48,23 +48,50 @@ class SignalInterceptLog
         string id = Console.ReadLine();
 
         int checkClassification = 0;
+        string savedClassification = "";
+        double validSignal = 0;
+
         while (checkClassification == 0)
         {
-            Console.WriteLine("Message type entered");
+            Console.WriteLine("Message type entered (0 or Friendly, 1 or Unidentified, 2 = Hostile): ");
             string ClassificationStr = Console.ReadLine();
-            string classification = ClassificationByEnum(ClassificationStr);
-            if (classification == "nunu")
+
+            if (Enum.TryParse<ClassificationEnum>(ClassificationStr, true, out ClassificationEnum result))
             {
-                checkClassification = 0;
+                savedClassification = result.ToString();
+                if (savedClassification == "nunu")
+                {
+                    checkClassification = 0;
+                }
+                else
+                    checkClassification = 1;
             }
             else
-            {
-                checkClassification = 1;
-            }
+                checkClassification = 0;
+            
         }
 
         int checkSignalStrength = 0;
-        while (checkSignalStrength == 0) ;
+        while (checkSignalStrength == 0)
+        {
+            Console.WriteLine("Enter frequency intensity: ");
+            string signalStrengthStr = Console.ReadLine();
+            if (double.TryParse(signalStrengthStr, out double signalStrengthDuble))
+            {
+                if (signalStrengthDuble < 0 | signalStrengthDuble > 300)
+                {
+                    Console.WriteLine("The number entered is invalid.");
+                    checkSignalStrength = 0;
+                }
+                else
+                    validSignal = signalStrengthDuble;
+                    checkSignalStrength = 1;
+            }
+        }
+        sourceId.Add(id);
+        classification.Add(savedClassification);
+        signalStrength.Add(validSignal);
+        return "Message added successfully!";
 
     }
     static string ClassificationByEnum (ClassificationEnum ClassificationWord)
@@ -80,5 +107,37 @@ class SignalInterceptLog
             default:
                 return "nunu";
         }
+    }
+    static void UpdatingClassification(List<string> sourceId, List<string> classification)
+    {
+        double newClassification = 0.0;
+        int checkid = 0;
+        while (checkid == 0)
+        {
+        }
+        int id = FindById(sourceId);
+        if (id >= 0)
+        {
+            Console.WriteLine("enter new classification: ");
+            string newClassificationStr = Console.ReadLine();
+
+        }
+        else
+        {
+            Console.WriteLine("Not found");
+            checkid = 1;
+        }
+
+    }
+    static int FindById(List<string> sourceId)
+    {
+        Console.WriteLine("enter id: ");
+        string idStr = Console.ReadLine();
+        for (int index = 0; index < sourceId.Count; index ++)
+        {
+            if (sourceId[index] == idStr)
+                return index;
+        }
+        return -1;
     }
 }
