@@ -34,5 +34,7 @@ class Toto
         Console.WriteLine(t);
         t.Heading = 999;
         Console.WriteLine(t);
+        //t.Id = 18;
+        //Console.WriteLine(t);
     }
 }
