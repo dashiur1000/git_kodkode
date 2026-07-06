@@ -12,14 +12,6 @@ abstract class Image
     }
     public abstract int score();
 }
-class Valid
-{
-    //public bool IsValid(Image image)
-    //{
-    //    if (image.CloudCover < 0 || image.CloudCover > 100) return false;
-    //    return true;
-    //}
-}
 class ImageFormat
 {
     public string ToSsv(Image image)
