@@ -1,4 +1,6 @@
-﻿namespace week13.day2.project1;
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace week13.day2.project1;
 
 abstract class SatelliteImage
 {
@@ -11,6 +13,10 @@ abstract class SatelliteImage
         CloudCover = cloudCover;
     }
     public abstract int score();
+    public override string ToString()
+    {
+        return $"Image {Id}: {CloudCover}% cloud {this.GetType().Name}";
+    }
 }
 class ImageFormat
 {
@@ -96,6 +102,39 @@ class Repository<T>
     public T Get(int i) => _items[i];
     public int Count => _items.Count;
 }
+class MemoryStore
+{
+    public int Save(SatelliteImage img)
+    {
+        List<SatelliteImage> SatelliteImage = new List<SatelliteImage>();
+        SatelliteImage.Add(img);
+        return SatelliteImage.Count;
+    }
+}
+class ImagePipeline
+{
+    private readonly MemoryStore _store = new MemoryStore();
+    public void GradingAndstorage(List<SatelliteImage> list)
+    {
+        foreach (SatelliteImage image in list)
+        {
+            try
+            {
+                image.score();
+                _store.Save(image);
+                Console.WriteLine($"{image.ToString()} in store");
+            }
+            catch
+            {
+                Console.WriteLine($"Exception in {image}");
+            }
+            finally
+            {
+                Console.WriteLine($"{image.ToString()} is in foreach");
+            }
+        }
+    }
+}
 class Test
 {
     public static void Main()
@@ -109,30 +148,33 @@ class Test
             new MULTISPECTRAL(4, 88),
             new QuickLookImage(5, 80)
         };
+        ImagePipeline pipeline = new ImagePipeline();
 
-        var repo = new Repository<SatelliteImage>();
-        foreach (var item in list)
-        {
-            repo.Add(item);
-        }
-        int total = 0;
-        foreach (var item in list)
-        {
-            try
-            {
-                {
-                    Console.WriteLine(format.ToSsv(item));
-                    total += item.score();
-                }
-            }
-            catch
-            {
-                Console.WriteLine(format.ToSsv(item));
-            }
-        }
-        {
-            Console.WriteLine($"total score: {total}");
-        }
+        pipeline.GradingAndstorage(list);
+
+        //var repo = new Repository<SatelliteImage>();
+        //foreach (var item in list)
+        //{
+        //    repo.Add(item);
+        //}
+        //int total = 0;
+        //foreach (var item in list)
+        //{
+        //    try
+        //    {
+        //        {
+        //            Console.WriteLine(format.ToSsv(item));
+        //            total += item.score();
+        //        }
+        //    }
+        //    catch
+        //    {
+        //        Console.WriteLine(format.ToSsv(item));
+        //    }
+        //}
+        //{
+        //    Console.WriteLine($"total score: {total}");
+        //}
     }
 
 }
