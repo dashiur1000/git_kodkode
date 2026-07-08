@@ -1,0 +1,11 @@
+CREATE_FILE report.pdf
+CREATE_FILE _system.dat
+CREATE_FILE nodotfile
+SEND_EMAIL user@gmail.com
+SEND_EMAIL notanemail
+SEND_EMAIL hacker@blocked.com
+BACKUP quarterly_data
+BACKUP CORRUPT_source
+BACKUP LOCKED_archive
+UNKNOWN_CMD something
+SEND_EMAIL
