@@ -15,7 +15,7 @@ class CommandParser
         string[] lines = rawLine.Split(" ");
         if(lines.Length == 2 )
         {
-            if (Enum.TryParse(lines[0], true, out Commandso command))
+            if (Enum.TryParse(lines[0], false, out Commandso command))
             {
                 switch (command)
                 {
