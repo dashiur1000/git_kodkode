@@ -54,10 +54,13 @@ class Maini
         var validator2 = new IsNotEmpty();
         int valid = 0;
         int invalid = 0;
-        string back = File.ReadAllText("../../../w4d1_reports_corrupted.json");
-        foreach (var line in back.Split("/"))
+        string debug = File.ReadAllText("../../../w4d1_reports_corrupted.json");
+        string baseDir = AppContext.BaseDirectory;
+        string filePath = Path.Combine(baseDir, "w4d1_reports.json");
+        string dot = File.ReadAllText(filePath);
+        Console.WriteLine(dot);
+        foreach (var line in dot.Split("/"))
         {
-            
             {
                 try
                 {
